@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { CommunityCard } from '@/components/communities/CommunityCard';
+import CommunityCard from '@/components/communities/CommunityCard';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -29,7 +29,7 @@ const Communities = () => {
   const filteredCommunities = communities.filter(community => {
     const matchesSearch = community.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          community.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || community.category === selectedCategory as typeof community.category;
+    const matchesCategory = selectedCategory === 'all' || community.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 

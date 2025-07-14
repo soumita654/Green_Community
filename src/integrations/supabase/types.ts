@@ -308,6 +308,50 @@ export type Database = {
           },
         ]
       }
+      products: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          id: string
+          image_url: string | null
+          name: string
+          price_in_points: number
+          shop_id: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description: string
+          id?: string
+          image_url?: string | null
+          name: string
+          price_in_points?: number
+          shop_id: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          name?: string
+          price_in_points?: number
+          shop_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_shop_id_fkey"
+            columns: ["shop_id"]
+            isOneToOne: false
+            referencedRelation: "shops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -344,6 +388,45 @@ export type Database = {
           location?: string | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      shops: {
+        Row: {
+          category: string
+          contact_info: Json | null
+          created_at: string
+          description: string
+          id: string
+          image_url: string | null
+          location: string
+          name: string
+          rating: number | null
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          contact_info?: Json | null
+          created_at?: string
+          description: string
+          id?: string
+          image_url?: string | null
+          location: string
+          name: string
+          rating?: number | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          contact_info?: Json | null
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          location?: string
+          name?: string
+          rating?: number | null
+          updated_at?: string
         }
         Relationships: []
       }
