@@ -17,6 +17,7 @@ import Index from "@/pages/Index";
 import Communities from "@/pages/Communities";
 import Stories from "@/pages/Stories";
 import Blogs from "@/pages/Blogs";
+import CreateBlog from "@/pages/CreateBlog";
 import Challenges from "@/pages/Challenges";
 import Marketplace from "@/pages/Marketplace";
 
@@ -78,6 +79,7 @@ function App() {
                   <Route path="/communities" element={<Communities />} />
                   <Route path="/stories" element={<Stories />} />
                   <Route path="/blogs" element={<Blogs />} />
+                  <Route path="/create-blog" element={<CreateBlog />} />
                   <Route path="/challenges" element={<Challenges />} />
                   <Route path="/marketplace" element={<Marketplace />} />
                   <Route path="*" element={<Navigate to="/" replace />} />

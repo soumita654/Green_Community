@@ -7,13 +7,15 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Camera, Image, Video, Plus } from 'lucide-react';
+import { Camera, Image, Video, Plus, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 const Stories = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [content, setContent] = useState('');
   const [mediaFile, setMediaFile] = useState<File | null>(null);
+  const [mediaPreview, setMediaPreview] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const { data: stories = [], isLoading, refetch } = useQuery({
     queryKey: ['stories'],
@@ -39,6 +41,8 @@ const Stories = () => {
       toast.error('Please add some content or media');
       return;
     }
+
+    setIsUploading(true);
 
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -79,12 +83,15 @@ const Stories = () => {
 
       setContent('');
       setMediaFile(null);
+      setMediaPreview(null);
       setIsCreating(false);
       refetch();
       toast.success('EcoStory shared! 🌱');
     } catch (error: any) {
       toast.error('Failed to create story');
       console.error(error);
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -95,8 +102,21 @@ const Stories = () => {
         toast.error('File size must be less than 10MB');
         return;
       }
+      
       setMediaFile(file);
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setMediaPreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
     }
+  };
+
+  const removeMedia = () => {
+    setMediaFile(null);
+    setMediaPreview(null);
   };
 
   if (isLoading) {
@@ -152,6 +172,32 @@ const Stories = () => {
                   className="border-green-300 focus:border-green-500 min-h-24"
                 />
                 
+                {mediaPreview && (
+                  <div className="relative">
+                    {mediaFile?.type.startsWith('image/') ? (
+                      <img 
+                        src={mediaPreview} 
+                        alt="Preview" 
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                    ) : (
+                      <video 
+                        src={mediaPreview} 
+                        className="w-full h-48 object-cover rounded-lg"
+                        controls
+                      />
+                    )}
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={removeMedia}
+                      className="absolute top-2 right-2"
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                )}
+                
                 <div className="flex items-center gap-2">
                   <Input
                     type="file"
@@ -176,17 +222,20 @@ const Stories = () => {
                 <div className="flex gap-2">
                   <Button
                     onClick={handleCreateStory}
+                    disabled={isUploading}
                     className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white"
                   >
-                    Share Story
+                    {isUploading ? 'Sharing...' : 'Share Story'}
                   </Button>
                   <Button
                     onClick={() => {
                       setIsCreating(false);
                       setContent('');
                       setMediaFile(null);
+                      setMediaPreview(null);
                     }}
                     variant="outline"
+                    disabled={isUploading}
                   >
                     Cancel
                   </Button>

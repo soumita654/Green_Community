@@ -3,10 +3,12 @@ import React from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Heart, MessageCircle, Share, Calendar } from 'lucide-react';
+import { Heart, Calendar } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import StoryComments from './StoryComments';
+import ShareStory from './ShareStory';
 
 interface Story {
   id: string;
@@ -145,23 +147,9 @@ const StoryCard = ({ story }: StoryCardProps) => {
             <span>{story.likes_count}</span>
           </Button>
 
-          <Button
-            variant="ghost"
-            size="sm"
-            className="flex items-center gap-2 text-gray-500 hover:text-green-600"
-          >
-            <MessageCircle className="w-4 h-4" />
-            <span>{story.comments_count}</span>
-          </Button>
+          <StoryComments storyId={story.id} commentsCount={story.comments_count} />
 
-          <Button
-            variant="ghost"
-            size="sm"
-            className="flex items-center gap-2 text-gray-500 hover:text-blue-600"
-          >
-            <Share className="w-4 h-4" />
-            Share
-          </Button>
+          <ShareStory storyId={story.id} content={story.content} />
         </div>
       </CardContent>
     </Card>
