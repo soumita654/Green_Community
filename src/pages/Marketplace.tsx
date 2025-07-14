@@ -198,18 +198,18 @@ const Marketplace = () => {
                     <MapPin className="w-4 h-4" />
                     {shop.location}
                   </div>
-                  {shop.contact_info && (
+                  {shop.contact_info && typeof shop.contact_info === 'object' && shop.contact_info !== null && (
                     <>
-                      {shop.contact_info.phone && (
+                      {(shop.contact_info as any).phone && (
                         <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
                           <Phone className="w-4 h-4" />
-                          {shop.contact_info.phone}
+                          {(shop.contact_info as any).phone}
                         </div>
                       )}
-                      {shop.contact_info.email && (
+                      {(shop.contact_info as any).email && (
                         <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
                           <Mail className="w-4 h-4" />
-                          {shop.contact_info.email}
+                          {(shop.contact_info as any).email}
                         </div>
                       )}
                     </>
