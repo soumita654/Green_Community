@@ -43,17 +43,17 @@ const MediaUpload: React.FC<MediaUploadProps> = ({
     try {
       const fileExt = file.name.split('.').pop();
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-      const bucket = isImage ? 'story-images' : 'story-videos';
+      const filePath = `stories/${fileName}`;
       
       const { error: uploadError } = await supabase.storage
-        .from(bucket)
-        .upload(fileName, file);
+        .from('media')
+        .upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
       const { data: { publicUrl } } = supabase.storage
-        .from(bucket)
-        .getPublicUrl(fileName);
+        .from('media')
+        .getPublicUrl(filePath);
 
       onMediaUploaded(publicUrl, isImage ? 'image' : 'video');
       toast.success(`${isImage ? 'Image' : 'Video'} uploaded successfully!`);
