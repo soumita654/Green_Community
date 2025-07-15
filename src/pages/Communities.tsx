@@ -7,10 +7,13 @@ import { Badge } from '@/components/ui/badge';
 import { Search, Users } from 'lucide-react';
 import CommunityCard from '@/components/communities/CommunityCard';
 import CreateCommunity from '@/components/communities/CreateCommunity';
+import { Database } from '@/integrations/supabase/types';
+
+type CommunityCategory = Database['public']['Enums']['community_category'];
 
 const Communities = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<CommunityCategory | ''>('');
 
   const { data: communities = [], isLoading } = useQuery({
     queryKey: ['communities', searchTerm, selectedCategory],
@@ -34,7 +37,7 @@ const Communities = () => {
     },
   });
 
-  const categories = [
+  const categories: { value: CommunityCategory | '', label: string }[] = [
     { value: '', label: 'All Categories' },
     { value: 'plastic_management', label: 'Plastic Management' },
     { value: 'tree_plantation', label: 'Tree Plantation' },
