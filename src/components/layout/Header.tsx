@@ -11,6 +11,7 @@ import {
   BookOpen, 
   Trophy, 
   ShoppingBag, 
+  Package,
   Moon, 
   Sun,
   LogOut,
@@ -58,6 +59,7 @@ const Header = () => {
     { href: '/blogs', label: 'GreenBlogs', icon: BookOpen },
     { href: '/challenges', label: 'EcoChallenges', icon: Trophy },
     { href: '/marketplace', label: 'GreenMart', icon: ShoppingBag },
+    { href: '/orders', label: 'My Orders', icon: Package },
   ];
 
   return (

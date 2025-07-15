@@ -20,6 +20,8 @@ import Blogs from "@/pages/Blogs";
 import CreateBlog from "@/pages/CreateBlog";
 import Challenges from "@/pages/Challenges";
 import Marketplace from "@/pages/Marketplace";
+import Orders from "@/pages/Orders";
+import Profile from "@/pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -82,6 +84,8 @@ function App() {
                   <Route path="/create-blog" element={<CreateBlog />} />
                   <Route path="/challenges" element={<Challenges />} />
                   <Route path="/marketplace" element={<Marketplace />} />
+                  <Route path="/orders" element={<Orders />} />
+                  <Route path="/profile" element={<Profile />} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </main>
