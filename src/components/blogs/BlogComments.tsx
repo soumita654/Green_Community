@@ -9,11 +9,11 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { formatDistanceToNow } from 'date-fns';
 
-interface StoryCommentsProps {
-  storyId: string;
+interface BlogCommentsProps {
+  blogId: string;
 }
 
-const StoryComments: React.FC<StoryCommentsProps> = ({ storyId }) => {
+const BlogComments: React.FC<BlogCommentsProps> = ({ blogId }) => {
   const [newComment, setNewComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
@@ -35,10 +35,10 @@ const StoryComments: React.FC<StoryCommentsProps> = ({ storyId }) => {
   });
 
   const { data: comments = [] } = useQuery({
-    queryKey: ['story-comments', storyId],
+    queryKey: ['blog-comments', blogId],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('story_comments')
+        .from('blog_comments')
         .select(`
           *,
           profiles (
@@ -46,7 +46,7 @@ const StoryComments: React.FC<StoryCommentsProps> = ({ storyId }) => {
             avatar_url
           )
         `)
-        .eq('story_id', storyId)
+        .eq('blog_id', blogId)
         .order('created_at', { ascending: true });
 
       if (error) throw error;
@@ -68,9 +68,9 @@ const StoryComments: React.FC<StoryCommentsProps> = ({ storyId }) => {
 
     try {
       const { error } = await supabase
-        .from('story_comments')
+        .from('blog_comments')
         .insert({
-          story_id: storyId,
+          blog_id: blogId,
           user_id: profile.user_id,
           content: newComment.trim(),
         });
@@ -79,9 +79,8 @@ const StoryComments: React.FC<StoryCommentsProps> = ({ storyId }) => {
 
       setNewComment('');
       
-      // Refresh comments and stories
-      queryClient.invalidateQueries({ queryKey: ['story-comments', storyId] });
-      queryClient.invalidateQueries({ queryKey: ['stories'] });
+      queryClient.invalidateQueries({ queryKey: ['blog-comments', blogId] });
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
       
       toast.success('Comment added!');
     } catch (error) {
@@ -94,8 +93,12 @@ const StoryComments: React.FC<StoryCommentsProps> = ({ storyId }) => {
 
   return (
     <div className="space-y-4">
+      <h4 className="font-semibold text-green-800 dark:text-green-200">
+        Comments ({comments.length})
+      </h4>
+      
       {/* Comments List */}
-      <div className="space-y-3 max-h-60 overflow-y-auto">
+      <div className="space-y-4 max-h-60 overflow-y-auto">
         {comments.map((comment) => (
           <div key={comment.id} className="flex gap-3">
             <Avatar className="w-8 h-8">
@@ -109,7 +112,7 @@ const StoryComments: React.FC<StoryCommentsProps> = ({ storyId }) => {
                 <p className="font-semibold text-sm text-green-800 dark:text-green-200">
                   {comment.profiles?.eco_name || 'Unknown User'}
                 </p>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
+                <p className="text-sm text-gray-700 dark:text-gray-300 mt-1">
                   {comment.content}
                 </p>
               </div>
@@ -156,4 +159,4 @@ const StoryComments: React.FC<StoryCommentsProps> = ({ storyId }) => {
   );
 };
 
-export default StoryComments;
+export default BlogComments;
