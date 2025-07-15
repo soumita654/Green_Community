@@ -51,18 +51,12 @@ if (fs.existsSync(oauthComponentPath)) {
   } else {
     console.log('❌ Google OAuth button not found');
   }
-  
-  if (componentContent.includes("handleSocialLogin('github')")) {
-    console.log('✅ GitHub OAuth button is present');
-  } else {
-    console.log('❌ GitHub OAuth button not found');
-  }
 } else {
   console.log('❌ OAuth component not found');
 }
 
 console.log('\nNext steps:');
 console.log('1. 📖 Read the OAUTH_SETUP_GUIDE.md file');
-console.log('2. 🔧 Configure Google and GitHub OAuth in Supabase dashboard');
+console.log('2. 🔧 Configure Google OAuth in Supabase dashboard');
 console.log('3. 🧪 Test the OAuth flow in your application');
 console.log('4. 🚀 Deploy and test in production');
