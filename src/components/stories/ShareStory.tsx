@@ -12,7 +12,7 @@ import MediaUpload from './MediaUpload';
 
 const ShareStory = () => {
   const [content, setContent] = useState('');
-  const [selectedCommunity, setSelectedCommunity] = useState<string>('');
+  const [selectedCommunity, setSelectedCommunity] = useState<string>('none');
   const [media, setMedia] = useState<{ url: string; type: 'image' | 'video' } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -76,7 +76,7 @@ const ShareStory = () => {
         .insert({
           content: content.trim(),
           user_id: profile.user_id,
-          community_id: selectedCommunity || null,
+          community_id: selectedCommunity === 'none' ? null : selectedCommunity,
           media_url: media?.url || null,
           media_type: media?.type || null,
         });
@@ -84,7 +84,7 @@ const ShareStory = () => {
       if (error) throw error;
 
       setContent('');
-      setSelectedCommunity('');
+      setSelectedCommunity('none');
       setMedia(null);
       
       // Refresh stories
@@ -135,7 +135,7 @@ const ShareStory = () => {
                   <SelectValue placeholder="Select a community (optional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">No community</SelectItem>
+                  <SelectItem value="none">No community</SelectItem>
                   {communities.map((community) => (
                     <SelectItem key={community.id} value={community.id}>
                       {community.name}
